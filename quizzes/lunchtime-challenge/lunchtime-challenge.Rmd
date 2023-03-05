@@ -1,0 +1,41 @@
+---
+title: "Lunchtime Challenge"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Graph
+
+### You are tasked with reproducing the following figure:
+
+```{r plot, echo = F, message = F, warning=F, fig.height=6}
+library(tidyverse)
+library(dslabs)
+
+death_prob %>% 
+  ggplot(aes(age, prob, col = sex)) + 
+  geom_point() + 
+  scale_y_log10() + 
+  labs(title = "Probability of Death within 1 Year by Age and Sex\nin the United States in 2015", x = "Age in Years", y = "Probability of Death", caption = "@Data from DSLabs")
+```
+
+
+```{r lunchtime, exercise=TRUE}
+
+```
+
+## Procedure
+
+- You'll need the _tidyverse_ library and the _dslabs_ library (install from CRAN by _install.packages("dslabs")_)
+- Get the dataset using _data("death_prob")_
+- You'll need to call ggplot setting _data = death_prob_
+- There are three aesthetics; for _age_, _prob_, and _sex_
+- Add the graph title, the axes labels, and add a caption
+- The y axis should be plotted on a log scale (using *scale_y_log10*)
+- There is also extra kudos for improving the figure with your own ideas

@@ -1,0 +1,127 @@
+---
+title: "Data Visualisation - Introduction"
+author: "Eugene"
+date: "`r format(Sys.Date(), '%B %d %Y')`"
+format: revealjs
+editor: visual
+---
+
+
+## Course Contents
+
+
+1. System Configuration - installing software
+2. Using RStudio
+3. Introduction to R
+4. Getting and Cleaning Data
+5. Exploratory Analysis - making rough plots
+6. Different Types of Plots
+7. Playing with Aesthetics
+8. Using Plotting Themes
+9. Advanced Topics - Maps, Networks
+
+
+## Why We're Here
+
+- Alternative to Excel, and Tableau
+- Enables Reproducible Research
+- Can Make Lots of Plots Quickly
+    - Good for Exploratory Analysis
+- Publication Ready Figures
+
+
+## And.... a gateway to so much more
+
+- data capture
+- statistical analysis
+- machine learning
+- artificial intelligence
+- writing your thesis
+- writing a blog
+
+## Not Why We're Here
+
+- Won't discuss choices for data presentation
+- Nor good practices in visualisations
+    - but these are sort of in the background
+- This isn't a machine learning course
+    - but lots of the techniques we'll use are relevant
+- So, this course it about skills development, how you use these is up to you.
+
+
+## We said we wouldn't discuss this....but
+
+- Graphics are important, overlooked, and inconsistent
+    - the last mile of analysis
+- Need to tell a story
+- Can be misleading, almost always by accident
+- Choice of colours - we'll spend some time on this
+- Choice of fonts
+- Keep it simple - reduce amount of ink
+- Increasing number of options for showcasing your data
+
+----
+
+```{r bar_plot}
+#| message: false
+#| echo: false
+#| fig-height: 8
+
+
+library(tidyverse)
+library(ggtext)
+
+title = "Sales of Jeans in Wakanda by Year.<br>Either <b style='color:#AE404D'> Bootcut </b> or <b style='color:#2E4B71'> Slimfit</b>"
+jeans <- data.frame(year = 2000:2012, 
+                    bootcut = c(1873, 1984, 2020, 2180, 2187, 2280, 2410, 2420, 2559, 2602, 2725, 2844, 2755),
+                    slimfit = c(1750, 1740, 1710, 1954, 1994, 2067, 2290, 2547, 2541, 2801, 2855, 3007, 3076))
+
+jeans %>% 
+  pivot_longer(names_to = "jean_type", cols = -year, values_to = "sales") %>% 
+  ggplot(aes(year, sales-1500, fill = jean_type)) + 
+  geom_col(position = position_dodge()) +
+  scale_fill_manual(values = c('#AE404D', '#2E4B71')) +
+  labs(title = title,
+       caption = "barplot by @eugene100hickey, data: Marvel Corporation") +
+  ylab("") +
+  xlab("Year") +
+  theme_minimal() +
+  theme(
+    plot.title = element_markdown(vjust = 7, size = 24),
+    legend.position = "none",
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.x = element_text(size = 18),
+    axis.text.x = element_text(size = 16),
+    panel.grid = element_blank())
+```
+
+---  
+
+```{r line_plot}
+#| message: false
+#| echo: false
+#| fig-height: 8
+
+jeans %>% 
+  pivot_longer(names_to = "jean_type", cols = -year, values_to = "sales") %>% 
+  ggplot(aes(year, sales-1500, col = jean_type)) + 
+  geom_line(size = 5) +
+  geom_point(size = 5) + 
+  scale_color_manual(values = c('#AE404D', '#2E4B71')) +
+  labs(title = title,
+       caption = "lineplot by @eugene100hickey, data: Marvel Corporation") +
+  ylab("") +
+  xlab("Year") + 
+  scale_x_continuous(labels = scales::number_format(accuracy = 1)) + 
+  xlim(2000, 2015) +
+  theme_minimal() +
+  theme(
+    plot.title = element_markdown(vjust = 7, size = 24),
+    legend.position = "none",
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.title.x = element_text(size = 18),
+    axis.text.x = element_text(size = 16),
+    panel.grid = element_blank())
+```

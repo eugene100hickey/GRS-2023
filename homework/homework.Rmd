@@ -1,0 +1,51 @@
+---
+title: "Tutorial"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Graph
+
+### Homework
+
+You are tasked with reproducing the following figure:
+
+```{r plot, echo = F, message = F, warning=F, fig.height=7, fig.width=8}
+library(tidyverse)
+library(carData)
+library(ggthemes)
+
+UN98 %>% 
+  ggplot(aes(lifeFemale, GDPperCapita, col = economicActivityFemale)) + 
+  geom_point() + scale_y_log10(labels = scales::dollar_format()) + 
+  facet_grid(.~region) + 
+  geom_smooth(se = F, method = "lm", colour = "firebrick4") + 
+  scale_color_gradient(low = "yellow", high = "darkred") + 
+  theme_wsj() +
+  labs(title = "Per capita GDP as a function\nof Female Life Expectancy", caption = "@Data from carData", colour = "Female Economic Activity") + 
+  theme(strip.text = element_text(size = 16, family = "Ink Free"))
+```
+
+```{r gdp-lifeExp, exercise=TRUE, warning = F, message = F, fig.width=8, fig.height=7}
+
+```
+
+## Procedure
+
+- You'll need the _tidyverse_ library, the _carData_ library (install from CRAN by _install.packages("carData")_), the _scales_ package, the _showtext_ package, and the _ggthemes_ library (install from CRAN by _install.packages("ggthemes")_) 
+- The dataset is called _UN98_ from _carData_.
+- There are three aesthetics; for x = _lifeFemale_, y = _GDPperCapita_, and colour = _economicActivityFemale_
+- Add the graph title, the legend title, and add a caption
+- The y axis should be plotted on a log scale with the labels set to _dollar()_ from the _scales_ package
+- Facet by _region_, use either _facet_grid()_ or _facet_wrap()_ as appropriate
+- Add a _geom_smooth()_ with _method = "lm"_ and _se = F_
+- Add an appropriate colour scale for the _economicActivityFemale_ aesthetic.
+- Set the theme for the plot with the _theme_wsj_ theme from the _ggthemes_ package (wsj copies the theme from the _Wall Street Journal_).
+- install some handwriting font with _font_add_google()_, don't forget to make it available with _showtext_auto()_. Use _theme(strip.text = element_text(.......))_ to print the continent names in this font. Make sure you do this after _theme_wsj()_ or else it gets overwritten.
+- As before, add something extra that enhances the image.
